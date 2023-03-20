@@ -1,3 +1,18 @@
 from django.shortcuts import render
 
-# Create your views here.
+from notes.forms import AddNoteForm
+from notes.models import Note
+
+
+def index(request):
+    notes = []
+    if request.method == "POST":
+        form = AddNoteForm(request.POST)
+        if form.is_valid():
+            Note.objects.create(
+                author=request.user, title=form.cleaned_data["title"], text=form.cleaned_data["text"]
+            )
+
+    else:
+        form = AddNoteForm()
+    return render(request, "index.html", {"notes": notes, "form": form})
