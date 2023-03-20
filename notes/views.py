@@ -5,7 +5,7 @@ from notes.models import Note
 
 
 def index(request):
-    notes = []
+    notes = Note.objects.all()
     if request.method == "POST":
         form = AddNoteForm(request.POST)
         if form.is_valid():
